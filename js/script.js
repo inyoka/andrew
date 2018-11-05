@@ -1,3 +1,1 @@
-$(document).ready(function() {
-    $('#example').DataTable();
-} );
+console.log("Andrews Student Database is running!!");
