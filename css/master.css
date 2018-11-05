@@ -6,3 +6,14 @@ body{
 .celllink{
   width: 10px;
 }
+
+
+.btn{
+  width: 100%;
+  margin: 0;
+}
+
+td{
+  padding: 0 !important;
+  margin: 0 !important;
+}
