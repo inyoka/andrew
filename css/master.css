@@ -1,7 +1,8 @@
 body{
-  background: lihtgray;
+  background: lightgray;
   background-color: lightgray;
 }
+<<<<<<< HEAD
 
 .celllink{
   width: 10px;
@@ -17,3 +18,5 @@ td{
   padding: 0 !important;
   margin: 0 !important;
 }
+=======
+>>>>>>> 0b79dc1ee1c17aad7f2f9910a16f4dbde481fa2a
