@@ -3,49 +3,34 @@
 import datetime
 import json
 import mysql.connector as SQLconn
+import secret
 
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, request, jsonify, render_template, url_for
 
 app = Flask(__name__)
 
-localhost = "192.168.0.254"
-remotehost = "110.232.86.18"
-auser = 'ck'
-adb = 'db_sms'
-apassword = 'cksmedan88'
 
 def connection():
     retried = 0
     connected = False
     while not connected:
         try:
-            db = SQLconn.connect(user=auser,
-                                  password=apassword,
-                                  host=remotehost,
-                                  database=adb)
+            db =   SQLconn.connect(**secret.config_remote)
             dbcur = db.cursor(dictionary=True)
             connected = True
         except Exception as e:
-            try:
-                db = SQLconn.connect(user=auser,
-                                      password=apassword,
-                                      host=remotehostx,
-                                      database=adb)
-                dbcur = self.db.cursor(dictionary=True)
-                connected = True
-            except Exception as e:
-                print ('Exception:',e)
-                retried += 1
-
+            print ('Exception:',e)
+            retried += 1
         if retried>9:
             print('Retried 10 times, please check network connection')
             return False, False
-
     return db, dbcur
 
 c, cur = connection()
 print ('connection', c , cur)
 
+
+@app.route('/')
 @app.route('/register', methods=["GET", "POST"])
 def register_page():
     try:
@@ -125,6 +110,22 @@ def flaskPost(sql):
     else:
         return ''
 
+# @app.route("/login", methods=["GET","PUT"])
+# def login():
+#     render_template('login.html')
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    error = None
+    if request.method == 'POST':
+        return auth(request.form['user_id'],
+                       request.form['password'])
+
+    # the code below is executed if the request method
+    # was GET or the credentials were invalid
+    return render_template('login.html', error=error)
+    # http://127.0.0.1:5000/login?user_id=s0103&password=CHARLOTT3
+
 
 @app.route("/validate", methods=["GET","PUT"])
 def validate():
@@ -132,7 +133,9 @@ def validate():
 
     user_id=content['user_id']
     password = content['password']
+    return auth(user_id,password)
 
+def auth(user_id, password):
     # clean up input strings
     user_id = user_id.strip()
     password = password.strip()
@@ -211,7 +214,7 @@ def post_lesson(content):
     subject_id = lesson_data['pelajaran_id']
     instructor_id = lesson_data['instructor_id']
     sch_div = lesson_data['sch_div']
-    ''' 
+    '''
     attendance of subject classes full and moving - not formclass
     absent_code limited to H(hadir,attend) or A(absent)'''
 
