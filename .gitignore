@@ -2,6 +2,7 @@
 
 env/
 attApp/
+secret.py
 
 
 # Byte-compiled / optimized / DLL files
