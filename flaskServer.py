@@ -118,13 +118,11 @@ def flaskPost(sql):
 def login():
     error = None
     if request.method == 'POST':
-        return auth(request.form['user_id'],
-                       request.form['password'])
+        return auth(request.form['user_id'], request.form['password'])
 
     # the code below is executed if the request method
     # was GET or the credentials were invalid
     return render_template('login.html', error=error)
-    # http://127.0.0.1:5000/login?user_id=s0103&password=CHARLOTT3
 
 
 @app.route("/validate", methods=["GET","PUT"])
